@@ -4,12 +4,25 @@
       <b-row class="mt-5 mb-5">
         <b-col
           v-for="dataArticles in dataArticle"
-          :key="dataArticles"
-          cols="4"
+          :key="dataArticles.id"
+          lg="4"
+          md="6"
+          sm="12"
           class="text-center mb-4"
         >
           <b-link style="color: black" :to="'/article/' + dataArticles.id">
-            <b-img :src="dataArticles.image" alt="Left image" fluid></b-img>
+            <b-img
+              v-if="isDev"
+              :src="dataArticles.image"
+              alt="Left image"
+              fluid
+            ></b-img>
+            <b-img
+              v-else
+              :src="dataArticles.image.substr(6)"
+              alt="Left image"
+              fluid
+            ></b-img>
             <div class="title text-left">
               {{ dataArticles.title }}
             </div>
@@ -32,10 +45,13 @@ export default {
       shortdesc: '',
       image: '',
       dataArticle: [],
+      isDev: true,
     }
   },
   mounted() {
     this.getArticle()
+    this.isDev = process.env.NODE_ENV != 'production' ? true : false
+    console.log(process.env.NODE_ENV)
   },
   methods: {
     async getArticle() {
