@@ -26,7 +26,8 @@
         <!-- Right aligned nav items -->
 
         <b-navbar-nav v-if="cookiez != null" class="ml-auto text-center">
-          Hi, {{ username }}
+          <span class="mt-2 mr-2"> Hi, {{ username }} </span>
+          <b-nav-item id="btnLogin" @click="logout">Logout</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-else class="ml-auto text-center">
           <b-nav-item id="btnLogin" @click="loginModal">Login</b-nav-item>
@@ -214,7 +215,7 @@ export default {
   },
   watch: {
     cookiez() {
-      console.log('cokoiez', this.cookiez)
+      console.log('cookiez', this.cookiez)
     },
   },
   mounted() {
@@ -241,15 +242,20 @@ export default {
         .post('/api/auth/login', this.loginForm)
         .then((response) => {
           console.log(response.data.content[0])
-          this.username = response.data.content[0].name
+          // this.username = response.data.content[0].name
 
           //SET COOKIES
           this.$cookies.set('token', response.data.content[0].token, {
             path: '/',
             maxAge: 60 * 60 * 24,
           })
+          this.$cookies.set('username', response.data.content[0].name, {
+            path: '/',
+            maxAge: 60 * 60 * 24,
+          })
           this.$toast.success('Login Success')
           this.cookiez = this.$cookies.get('token')
+          this.username = this.$cookies.get('username')
           this.resetLoginForm()
         })
         .catch((err) => {
@@ -300,6 +306,12 @@ export default {
             }
           }
         })
+    },
+    logout() {
+      this.$cookies.remove('token')
+      this.$cookies.remove('username')
+      this.cookiez = null
+      this.$toast.success('Logout Success')
     },
     hideAndShowPass() {
       console.log('masuk')
