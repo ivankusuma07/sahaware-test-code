@@ -47,7 +47,7 @@ export default {
   methods: {
     async getArticle() {
       await this.$axios
-        .get('/api/article?search=&size=21&page=1', {
+        .get('/api/article?search=&size=1000&page=1', {
           headers: { Authorization: 'Bearer ' + this.$cookies.get('token') },
         })
         .then((response) => {

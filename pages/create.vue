@@ -61,7 +61,10 @@
               </b-form-checkbox>
             </b-col>
           </b-row>
-          <b-button type="button" variant="danger" @click="publishArticle"
+          <b-button
+            type="button"
+            variant="danger"
+            @click.prevent="publishArticle"
             ><b-spinner v-show="showSpinner" class="mr-2" small></b-spinner
             >Publish</b-button
           >
@@ -137,28 +140,30 @@ export default {
         formData.append(key, this.formArticle[key])
       })
       await this.$axios
-        .post(
-          '/api/article/create',
-          {
-            headers: { Authorization: 'Bearer ' + this.$cookies.get('token') },
-          },
-          formData
-        )
+        .post('/api/article/create', formData, {
+          headers: { Authorization: 'Bearer ' + this.$cookies.get('token') },
+        })
         .then((response) => {
-          console.log(response.data.content)
+          console.log('reponse article success', response)
           this.showSpinner = false
-          this.resetArticlePost()
+
+          if (response.status === 200 && response.data.code !== 409) {
+            this.$toast.success('Article has been created')
+            this.resetArticlePost()
+          } else {
+            this.$toast.error(response.data.message.details[0].message)
+          }
 
           // console.log('filter data', this.dataArticle)
         })
         .catch((err) => {
-          this.showSpinner = true
+          this.showSpinner = false
           this.showHideSpinner = false
           if (!err) {
           } else {
-            console.log(err.response.data)
-            console.log(err.response.status)
-            console.log(err.response.headers)
+            // console.log(err.response.data)
+            // console.log(err.response.status)
+            // console.log(err.response.headers)
             // this.resetLoginForm()
             if (err.response.status === 409) {
               this.$toast.error(err.response.data.message.details[0].message)
@@ -188,9 +193,9 @@ export default {
           this.showHideSpinner = false
           if (!err) {
           } else {
-            console.log(err.response.data)
-            console.log(err.response.status)
-            console.log(err.response.headers)
+            // console.log(err.response.data)
+            // console.log(err.response.status)
+            // console.log(err.response.headers)
             // this.resetLoginForm()
             if (err.response.status === 409) {
               this.$toast.error(err.response.data.message.details[0].message)

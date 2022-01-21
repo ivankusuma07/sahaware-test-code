@@ -212,11 +212,17 @@ export default {
       cookiez: null,
     }
   },
+  watch: {
+    cookiez() {
+      console.log('cokoiez', this.cookiez)
+    },
+  },
   mounted() {
     // setInterval(() => {
     //   this.cookiez = this.$cookies.get('token')
     //   console.log(this.cookiez)
     // }, 1000)
+    // this.cookiez = this.$cookies.get('token')
   },
   methods: {
     loginModal() {
@@ -243,6 +249,7 @@ export default {
             maxAge: 60 * 60 * 24,
           })
           this.$toast.success('Login Success')
+          this.cookiez = this.$cookies.get('token')
           this.resetLoginForm()
         })
         .catch((err) => {
