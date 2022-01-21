@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <LoadSpinner v-if="showHideSpinner" />
-    <b-container style="margin-top: 20vh">
+    <b-container style="margin-top: 5vh">
       <b-row class="mt-5 mb-5">
         <b-col lg="3" sm="2" xs="2"> </b-col>
         <b-col lg="6" sm="8" xs="8">

@@ -3,7 +3,7 @@
     <LoadSpinner v-if="showHideSpinner" />
     <b-container>
       <b-row>
-        <b-col cols="12" class="p-3" style="margin-top: 20vh">
+        <b-col cols="12" class="p-3" style="margin-top: 10vh">
           <b-img src="/woman.png" alt="Left image" fluid></b-img>
         </b-col>
       </b-row>

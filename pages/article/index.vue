@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <LoadSpinner v-if="showHideSpinner" />
-    <b-container style="margin-top: 10vh">
+    <b-container style="margin-top: 5vh">
       <b-row class="mt-5 mb-5">
         <b-col
           v-for="dataArticles in dataArticle"

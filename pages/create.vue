@@ -1,7 +1,7 @@
 <template>
   <div class="bg">
     <LoadSpinner v-if="showHideSpinner" />
-    <b-container style="margin-top: 10vh">
+    <b-container style="margin-top: 5vh">
       <b-row class="mt-5 mb-5">
         <b-col lg="8" md="8" sm="12" class="mb-4">
           <div class="title mb-4">Create New Article</div>
