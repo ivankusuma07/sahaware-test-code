@@ -28,6 +28,10 @@ export default {
       src: '~/plugins/bootstrap-icon.js',
       mode: 'client',
     },
+    {
+      src: '~/plugins/ckeditor.js',
+      mode: 'client',
+    },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

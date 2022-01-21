@@ -1,5 +1,6 @@
 <template>
   <div class="bg">
+    <LoadSpinner v-if="showHideSpinner" />
     <b-container>
       <b-row>
         <b-col cols="12" class="p-3" style="margin-top: 20vh">
@@ -11,7 +12,7 @@
           <h2>Article</h2>
         </b-col>
       </b-row>
-      <b-row class="mt-5 mb-5">
+      <!-- <b-row class="mt-5 mb-5">
         <b-col sm class="text-center mb-4">
           <b-link style="color: black" to="/article">
             <b-img src="/image1.png" alt="Left image" fluid></b-img>
@@ -41,6 +42,26 @@
             Designing a user flow requires careful management of resources.
           </div>
         </b-col>
+      </b-row> -->
+      <b-row class="mt-5 mb-5">
+        <b-col
+          v-for="dataArticles in dataArticle"
+          :key="dataArticles.id"
+          lg="4"
+          md="6"
+          sm="12"
+          class="text-center mb-4"
+        >
+          <nuxt-link style="color: black" :to="'/article/' + dataArticles.id">
+            <b-img :src="dataArticles.image" alt="Left image" fluid></b-img>
+            <div class="title text-left">
+              {{ dataArticles.title }}
+            </div>
+            <div class="subtitle text-left">
+              {{ dataArticles.short_description }}
+            </div>
+          </nuxt-link>
+        </b-col>
       </b-row>
     </b-container>
   </div>
@@ -49,6 +70,56 @@
 <script>
 export default {
   name: 'IndexPage',
+  data() {
+    return {
+      title: '',
+      shortdesc: '',
+      image: '',
+      dataArticle: [],
+      showHideSpinner: true,
+    }
+  },
+  beforeCreate() {
+    this.showHideSpinner = true
+  },
+  created() {
+    this.getArticle()
+  },
+  methods: {
+    async getArticle() {
+      await this.$axios
+        .get('/api/article?search=&size=21&page=1', {
+          headers: { Authorization: 'Bearer ' + this.$cookies.get('token') },
+        })
+        .then((response) => {
+          this.showHideSpinner = false
+          // console.log(response.data.content)
+          const dataFilter = response.data.content.filter(
+            (el) =>
+              el.image.includes('.png') ||
+              el.image.includes('.jpeg') ||
+              el.image.includes('.jpg')
+          )
+          this.dataArticle = dataFilter.slice(0, 3)
+          console.log('filter data', this.dataArticle)
+        })
+        .catch((err) => {
+          this.showHideSpinner = false
+          if (!err) {
+          } else {
+            console.log(err.response.data)
+            console.log(err.response.status)
+            console.log(err.response.headers)
+            // this.resetLoginForm()
+            if (err.response.status === 409) {
+              this.$toast.error(err.response.data.message.details[0].message)
+            } else {
+              this.$toast.error(err.response.data.message)
+            }
+          }
+        })
+    },
+  },
 }
 </script>
 <style scoped>

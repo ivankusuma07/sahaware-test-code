@@ -1,3 +1,6 @@
 body {
   font-family: 'Roboto', sans-serif;
 }
+.ck-editor__editable_inline {
+  min-height: 1034.98px;
+}

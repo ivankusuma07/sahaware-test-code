@@ -1,6 +1,7 @@
 <template>
   <div class="bg">
-    <b-container style="margin-top: 20vh">
+    <LoadSpinner v-if="showHideSpinner" />
+    <b-container style="margin-top: 10vh">
       <b-row class="mt-5 mb-5">
         <b-col
           v-for="dataArticles in dataArticle"
@@ -10,7 +11,7 @@
           sm="12"
           class="text-center mb-4"
         >
-          <b-link style="color: black" :to="'/article/' + dataArticles.id">
+          <nuxt-link style="color: black" :to="'/article/' + dataArticles.id">
             <b-img :src="dataArticles.image" alt="Left image" fluid></b-img>
             <div class="title text-left">
               {{ dataArticles.title }}
@@ -18,7 +19,7 @@
             <div class="subtitle text-left">
               {{ dataArticles.short_description }}
             </div>
-          </b-link>
+          </nuxt-link>
         </b-col>
       </b-row>
     </b-container>
@@ -34,9 +35,13 @@ export default {
       shortdesc: '',
       image: '',
       dataArticle: [],
+      showHideSpinner: true,
     }
   },
-  mounted() {
+  beforeCreate() {
+    this.showHideSpinner = true
+  },
+  created() {
     this.getArticle()
   },
   methods: {
@@ -46,6 +51,7 @@ export default {
           headers: { Authorization: 'Bearer ' + this.$cookies.get('token') },
         })
         .then((response) => {
+          this.showHideSpinner = false
           // console.log(response.data.content)
           const dataFilter = response.data.content.filter(
             (el) =>
@@ -57,6 +63,7 @@ export default {
           console.log('filter data', this.dataArticle)
         })
         .catch((err) => {
+          this.showHideSpinner = false
           if (!err) {
           } else {
             console.log(err.response.data)
@@ -77,6 +84,9 @@ export default {
 <style scoped>
 .bg {
   background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 .title {
   font-family: Roboto;
