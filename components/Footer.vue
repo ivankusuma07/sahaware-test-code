@@ -5,7 +5,12 @@
         <b-col>
           <div
             class="py-4 px-4"
-            style="font-style: normal; font-weight: normal; font-size: 16px"
+            style="
+              font-style: normal;
+              font-weight: normal;
+              font-size: 16px;
+              margin-left: -5vw;
+            "
           >
             Copyright © Sahaware Asessment 2021
           </div>
